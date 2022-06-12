@@ -3,9 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bmp601.everylirarepoerts">
 
+<!--    <uses-permission android:name="com.bmp601.everyLiraContentProviderCategories.permission.READ_PROVIDER" />-->
+<!--    <uses-permission android:name="com.bmp601.everyLiraContentProviderCategories.WRITE_DATABASE" />-->
+<!--    <uses-permission android:name="com.bmp601.everyLiraContentProviderCategories.READ_DATABASE" />-->
     <uses-permission android:name="com.bmp601.READ_DATABASE" />
     <uses-permission android:name="com.bmp601.WRITE_DATABASE" />
-
+<!--    <uses-permission android:name="com.bmp601.com.bmp601.everyLiraContentProviderExpenses.READ_DATABASE" />-->
+    <queries>
+        <package android:name="com.bmp601.everylira" />
+    </queries>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,7 +20,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EveryLiraRepoerts"
+        android:theme="@style/Theme.EveryLira"
         tools:targetApi="31">
         <activity
             android:name=".SpecificReportActivity"

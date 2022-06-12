@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Every Lira</string>
+    <string name="app_name">Every Lira Reports</string>
     <string name="next">Next</string>
 
 
@@ -62,6 +62,7 @@
     <string name="get_report">Get Report</string>
     <string name="year">Year:</string>
     <string name="month">Month</string>
+    <string name="noExpenses">No Expenses Found</string>
 
 
 </resources>

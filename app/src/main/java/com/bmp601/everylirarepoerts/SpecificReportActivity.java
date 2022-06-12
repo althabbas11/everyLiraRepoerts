@@ -6,6 +6,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -34,15 +35,15 @@ public class SpecificReportActivity extends AppCompatActivity {
     private SimpleCursorAdapter dataAdapter;
     private String kindOfReport;
     Uri reportUri;
-    TextView year, month, totalCost, totalCostTextView, currency;
+    TextView noExpenses, reportName, year, month, totalCost, totalCostTextView, currency;
     Spinner yearsSpinner, monthsSpinner;
     Button getReport;
-    private static final String AUTHORITY = "com.bmp601.everyLiraContentProviderCategories";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_report);
+
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -50,6 +51,8 @@ public class SpecificReportActivity extends AppCompatActivity {
         String[] from = new String[]{"name", "categoryName", "price", "date"};
         int[] to = new int[]{R.id.expenseItemName, R.id.expenseCategoryName, R.id.expensePrice, R.id.expenseDate};
 
+        noExpenses = findViewById(R.id.noExpenses);
+        reportName = findViewById(R.id.reportName);
         year = findViewById(R.id.year);
         month = findViewById(R.id.month);
         totalCost = findViewById(R.id.totalCost);
@@ -65,6 +68,9 @@ public class SpecificReportActivity extends AppCompatActivity {
         }
 
         if (kindOfReport.trim().equalsIgnoreCase("yearlyReports")) {
+
+            reportName.setText(R.string.yearlyReports);
+            reportName.setVisibility(View.VISIBLE);
 
             year.setVisibility(View.VISIBLE);
             totalCost.setVisibility(View.GONE);
@@ -93,7 +99,7 @@ public class SpecificReportActivity extends AppCompatActivity {
 //                    Log.w("Search query", searchQuery);
                     String[] args = {selectedYear};
 
-                    Cursor c = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesYearTotal"), null, null, args, null);
+                    Cursor c = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesYearTotal"), null, null, args, null);
                     c.moveToFirst();
 
                     if (c.getString(c.getColumnIndexOrThrow("Total")) == null)
@@ -101,7 +107,13 @@ public class SpecificReportActivity extends AppCompatActivity {
                     else
                         totalCost.setText(c.getString(c.getColumnIndexOrThrow("Total")));
 
-                    Cursor cursor = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesYear"), null, null, args, null);
+                    Cursor cursor = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesYear"), null, null, args, null);
+
+                    if (cursor.getCount() == 0){
+                        noExpenses.setVisibility(View.VISIBLE);
+                        noExpenses.setText(R.string.noExpenses);
+                    } else
+                        noExpenses.setVisibility(View.GONE);
 
                     Log.w("Cursor", String.valueOf(cursor.getCount()));
 
@@ -120,6 +132,9 @@ public class SpecificReportActivity extends AppCompatActivity {
         }
 
         if (kindOfReport.trim().equalsIgnoreCase("monthlyReports")) {
+
+            reportName.setText(R.string.monthlyReports);
+            reportName.setVisibility(View.VISIBLE);
 
             year.setVisibility(View.VISIBLE);
             month.setVisibility(View.VISIBLE);
@@ -162,7 +177,7 @@ public class SpecificReportActivity extends AppCompatActivity {
                         selectedMonth = '0' + selectedMonth;
                     String[] args = {selectedYear, selectedMonth};
 
-                    Cursor c = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesMonthTotal"), null, null, args, null);
+                    Cursor c = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesMonthTotal"), null, null, args, null);
                     c.moveToFirst();
 
                     if (c.getString(c.getColumnIndexOrThrow("Total")) == null)
@@ -170,7 +185,13 @@ public class SpecificReportActivity extends AppCompatActivity {
                     else
                         totalCost.setText(c.getString(c.getColumnIndexOrThrow("Total")));
 
-                    Cursor cursor = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesMonth"), null, null, args, null);
+                    Cursor cursor = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesMonth"), null, null, args, null);
+
+                    if (cursor.getCount() == 0){
+                        noExpenses.setVisibility(View.VISIBLE);
+                        noExpenses.setText(R.string.noExpenses);
+                    } else
+                        noExpenses.setVisibility(View.GONE);
 
                     Log.w("Cursor", String.valueOf(cursor.getCount()));
 
@@ -191,6 +212,9 @@ public class SpecificReportActivity extends AppCompatActivity {
         if (kindOfReport.trim().equalsIgnoreCase("categoryReport")) {
             year.setText(R.string.category);
 
+            reportName.setText(R.string.categoryReport);
+            reportName.setVisibility(View.VISIBLE);
+
             year.setVisibility(View.VISIBLE);
             totalCost.setVisibility(View.GONE);
             totalCostTextView.setVisibility(View.GONE);
@@ -199,7 +223,7 @@ public class SpecificReportActivity extends AppCompatActivity {
             getReport.setVisibility(View.VISIBLE);
 
             ArrayList<String> categoriesList = new ArrayList<String>();
-            Cursor c = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/categories"), null, null, null, null);
+            Cursor c = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderCategories/categories"), null, null, null, null);
 
             while (c.moveToNext()) {
                 String currentCategory = c.getString(c.getColumnIndexOrThrow("categoryName"));
@@ -223,7 +247,7 @@ public class SpecificReportActivity extends AppCompatActivity {
 
                     String[] args = {selectedCategory};
 
-                    Cursor c = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesCategoryTotal"), null, null, args, null);
+                    Cursor c = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesCategoryTotal"), null, null, args, null);
                     c.moveToFirst();
 
                     if (c.getString(c.getColumnIndexOrThrow("Total")) == null)
@@ -231,7 +255,13 @@ public class SpecificReportActivity extends AppCompatActivity {
                     else
                         totalCost.setText(c.getString(c.getColumnIndexOrThrow("Total")));
 
-                    Cursor cursor = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesCategoryReport"), null, null, args, null);
+                    Cursor cursor = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesCategoryReport"), null, null, args, null);
+
+                    if (cursor.getCount() == 0){
+                        noExpenses.setVisibility(View.VISIBLE);
+                        noExpenses.setText(R.string.noExpenses);
+                    } else
+                        noExpenses.setVisibility(View.GONE);
 
                     Log.w("Cursor", String.valueOf(cursor.getCount()));
 
@@ -249,13 +279,22 @@ public class SpecificReportActivity extends AppCompatActivity {
         }
 
         if (kindOfReport.trim().equalsIgnoreCase("purchasedItemsReport")) {
-            reportUri = Uri.parse("content://" + AUTHORITY + "/expensesPaidReport");
-            Cursor c = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesPaidCost"), null, null, null, null);
+
+            reportName.setText(R.string.purchasedItemsReport);
+            reportName.setVisibility(View.VISIBLE);
+
+            reportUri = Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesPaidReport");
+            Cursor c = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesPaidCost"), null, null, null, null);
             c.moveToFirst();
             totalCost.setText(c.getString(c.getColumnIndexOrThrow("Total")));
 
-            Cursor cursor = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesPaidReport"), null, null, null, null);
+            Cursor cursor = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesPaidReport"), null, null, null, null);
 
+            if (cursor.getCount() == 0){
+                noExpenses.setVisibility(View.VISIBLE);
+                noExpenses.setText(R.string.noExpenses);
+            } else
+                noExpenses.setVisibility(View.GONE);
 
             SimpleCursorAdapter dataAdapter;
             dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, cursor, from, to, 0);
@@ -264,11 +303,21 @@ public class SpecificReportActivity extends AppCompatActivity {
         }
 
         if (kindOfReport.trim().equalsIgnoreCase("serviceReport")) {
-            reportUri = Uri.parse("content://" + AUTHORITY + "/expensesServicesReport");
-            Cursor c = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesServicesCost"), null, null, null, null);
+
+            reportName.setText(R.string.servicesReport);
+            reportName.setVisibility(View.VISIBLE);
+
+            reportUri = Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesServicesReport");
+            Cursor c = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesServicesCost"), null, null, null, null);
             c.moveToFirst();
             totalCost.setText(c.getString(c.getColumnIndexOrThrow("Total")));
-            Cursor cursor = getContentResolver().query(Uri.parse("content://" + AUTHORITY + "/expensesServicesReport"), null, null, null, null);
+            Cursor cursor = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesServicesReport"), null, null, null, null);
+
+            if (cursor.getCount() == 0){
+                noExpenses.setVisibility(View.VISIBLE);
+                noExpenses.setText(R.string.noExpenses);
+            } else
+                noExpenses.setVisibility(View.GONE);
 
             SimpleCursorAdapter dataAdapter;
             dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, cursor, from, to, 0);

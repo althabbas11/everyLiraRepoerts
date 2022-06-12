@@ -26,9 +26,6 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reports);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         yearlyReports = findViewById(R.id.yearlyReports);
         yearlyReports.setOnClickListener(this);
 
@@ -82,14 +79,6 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
                 break;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }
