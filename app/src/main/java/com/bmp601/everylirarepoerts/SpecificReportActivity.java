@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -126,9 +127,9 @@ public class SpecificReportActivity extends AppCompatActivity {
 
                         // If no expenses found, set the total cost value to zero
                         if (c1.getString(c1.getColumnIndexOrThrow("Total")) == null)
-                            totalCostValue.setText("0");
+                            totalCostValue.setText(getFormattedPrice("0"));
                         else
-                            totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+                            totalCostValue.setText(getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
                         c1.close();
 
@@ -194,9 +195,9 @@ public class SpecificReportActivity extends AppCompatActivity {
                         c1.moveToFirst();
 
                         if (c1.getString(c1.getColumnIndexOrThrow("Total")) == null)
-                            totalCostValue.setText("0");
+                            totalCostValue.setText(getFormattedPrice("0"));
                         else
-                            totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+                            totalCostValue.setText(getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
                         c1.close();
 
@@ -279,9 +280,9 @@ public class SpecificReportActivity extends AppCompatActivity {
                         c1.moveToFirst();
 
                         if (c1.getString(c1.getColumnIndexOrThrow("Total")) == null)
-                            totalCostValue.setText("0");
+                            totalCostValue.setText(getFormattedPrice("0"));
                         else
-                            totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+                            totalCostValue.setText(getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
                         c1.close();
 
@@ -317,7 +318,7 @@ public class SpecificReportActivity extends AppCompatActivity {
                 // First, we need to make a query on the sum of expenses of all purchased items (items with price more than zero)
                 Cursor c1 = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesPaidCost"), null, null, null, null);
                 c1.moveToFirst();
-                totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+                totalCostValue.setText(getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
                 c1.close();
 
@@ -350,7 +351,7 @@ public class SpecificReportActivity extends AppCompatActivity {
                 // First, we need to make a query on the sum of expenses that are services
                 Cursor c1 = getContentResolver().query(Uri.parse("content://com.bmp601.everyLiraContentProviderExpenses/expensesServicesCost"), null, null, null, null);
                 c1.moveToFirst();
-                totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+                totalCostValue.setText(getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
                 c1.close();
 
@@ -373,6 +374,13 @@ public class SpecificReportActivity extends AppCompatActivity {
                 showExceptionDialogue();
             }
         }
+    }
+
+    @NonNull
+    private static String getFormattedPrice(String enteredExpensePrice) {
+        enteredExpensePrice = enteredExpensePrice.replace(",","");
+
+        return String.format(new Locale("en", "US"), "%,.2f", Double.parseDouble(enteredExpensePrice));
     }
 
     private void showExceptionDialogue() {
