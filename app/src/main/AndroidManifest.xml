@@ -3,12 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bmp601.everylirarepoerts">
 
-<!--    <uses-permission android:name="com.bmp601.everyLiraContentProviderCategories.permission.READ_PROVIDER" />-->
-<!--    <uses-permission android:name="com.bmp601.everyLiraContentProviderCategories.WRITE_DATABASE" />-->
-<!--    <uses-permission android:name="com.bmp601.everyLiraContentProviderCategories.READ_DATABASE" />-->
     <uses-permission android:name="com.bmp601.READ_DATABASE" />
-    <uses-permission android:name="com.bmp601.WRITE_DATABASE" />
-<!--    <uses-permission android:name="com.bmp601.com.bmp601.everyLiraContentProviderExpenses.READ_DATABASE" />-->
+
     <queries>
         <package android:name="com.bmp601.everylira" />
     </queries>
@@ -24,7 +20,8 @@
         tools:targetApi="31">
         <activity
             android:name=".SpecificReportActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".ReportsActivity"
             android:exported="false" />

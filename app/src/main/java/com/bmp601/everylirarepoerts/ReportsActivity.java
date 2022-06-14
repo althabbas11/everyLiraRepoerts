@@ -1,5 +1,6 @@
 package com.bmp601.everylirarepoerts;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import java.util.Objects;
 
 public class ReportsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // Declaring variables
     Button yearlyReports, monthlyReports, categoryReport, purchasedItemsReport, serviceReport;
 
     @Override
@@ -26,6 +28,8 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reports);
 
+        // Initializing variables
+        // All buttons will be setOnClickListener
         yearlyReports = findViewById(R.id.yearlyReports);
         yearlyReports.setOnClickListener(this);
 
@@ -40,11 +44,11 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
 
         serviceReport = findViewById(R.id.serviceReport);
         serviceReport.setOnClickListener(this);
-
     }
 
+    // Each button view will navigate to the same activity but with different bundle data (kindOfReport)
     @SuppressLint("NonConstantResourceId")
-    public void onClick(View v) {
+    public void onClick(@NonNull View v) {
         Intent intent = new Intent(getApplicationContext(), SpecificReportActivity.class);
         Bundle bundle;
         switch (v.getId()) {
@@ -80,5 +84,4 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
-
 }
