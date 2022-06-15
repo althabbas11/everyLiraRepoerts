@@ -334,6 +334,10 @@ public class SpecificReportActivity extends AppCompatActivity {
                 dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, c2, from, to, 0);
 
                 expensesListView.setAdapter(dataAdapter);
+
+                totalCostValue.setVisibility(View.VISIBLE);
+                totalCostTextView.setVisibility(View.VISIBLE);
+                currency.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 totalCostTextView.setVisibility(View.GONE);
                 totalCostValue.setVisibility(View.GONE);
@@ -367,6 +371,10 @@ public class SpecificReportActivity extends AppCompatActivity {
                 dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, c2, from, to, 0);
 
                 expensesListView.setAdapter(dataAdapter);
+
+                totalCostValue.setVisibility(View.VISIBLE);
+                totalCostTextView.setVisibility(View.VISIBLE);
+                currency.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 totalCostTextView.setVisibility(View.GONE);
                 totalCostValue.setVisibility(View.GONE);
